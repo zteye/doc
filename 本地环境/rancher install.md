@@ -51,3 +51,39 @@ kubectl -n cattle-system create \
 
 常用命令
 helm delete --purge rancher
+
+
+
+docker参数
+
+```json
+{
+  "registry-mirrors": ["https://8vd4zs15.mirror.aliyuncs.com"],
+  "max-concurrent-downloads": 10,
+  "max-concurrent-uploads": 5,
+  "insecure-registries":["zteye.harbor:80"]
+}
+```
+
+
+
+# 搭建consul集群
+
+三台主机上建立数据目录和配置目录，目录为空即可：
+
+```bash
+mkdir -p /app/consul/data
+
+mkdir -p /app/consul/conf
+```
+
+三台主机依次启动容器：
+
+```bash
+docker run --net=host --name consul -v /app/consul/data:/consul/data -v /app/consul/conf:/consul/config -d zteye.harbor:80/zteye/consul consul agent -server -bind=192.168.137.110 -client 0.0.0.0 -ui -bootstrap-expect=3 -data-dir /consul/data -config-dir /consul/config
+
+docker run --net=host --name consul -v /app/consul/data:/consul/data -v /app/consul/conf:/consul/config -d zteye.harbor:80/zteye/consul consul agent -server -bind=192.168.137.101 -client 0.0.0.0 -ui -bootstrap-expect=3 -data-dir /consul/data -config-dir /consul/config  -join  192.168.137.110
+
+docker run --net=host --name consul -v /app/consul/data:/consul/data -v /app/consul/conf:/consul/config -d zteye.harbor:80/zteye/consul consul agent -server -bind=192.168.137.102 -client 0.0.0.0 -ui -bootstrap-expect=3 -data-dir /consul/data -config-dir /consul/config  -join  192.168.137.110
+```
+
