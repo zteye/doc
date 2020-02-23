@@ -31,3 +31,9 @@ sudo docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kube
 等待一会，10分钟左右把，集群创建成功，登录rancher查看：
 
 ![image-20200221111756015](images\image-20200221111756015.png)
+
+node2 work节点要启动的容器如下:
+
+![image-20200221112151387](images\image-20200221112151387.png)
+
+总共生效的容器有18个。
